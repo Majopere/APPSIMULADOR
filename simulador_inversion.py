@@ -23,7 +23,6 @@ etfs = {
     "AZ MSCI EMU": "EZU",
     "AZ FTSE/XINHUA CHINA 25": "FXI",
     "AZ Oro": "GLD",
-    "AZ LATIXX MEX CETETRAC": "MXX",
     "AZ QQQ NASDAQ 100": "QQQ",
     "AZ MSCI ASIA EX-JAPAN": "AAXJ",
     "AZ LATIXX MEX M10TRAC": "M10.MX",
