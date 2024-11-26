@@ -7,10 +7,18 @@ from googletrans import Translator
 import sqlite3
 import bcrypt
 import openai
-
+from chatterbot import ChatBot
+from chatterbot.trainers import ChatterBotCorpusTrainer
 
 
 openai.api_key = st.secrets["OPENAI_API_KEY"]
+
+# Crear un chatbot
+chatbot = ChatBot('SimuladorBot')
+
+# Entrenar el chatbot con datos en español
+trainer = ChatterBotCorpusTrainer(chatbot)
+trainer.train('chatterbot.corpus.spanish')
 
 # Configuración de la página de Streamlit
 st.set_page_config(page_title="Simulador Allianz OptiMaxx", layout="wide")
@@ -475,6 +483,11 @@ def main():
         st.subheader("Asistente Virtual 🤖")
         st.write("Haz preguntas sobre finanzas, ETFs o cualquier duda que tengas sobre el simulador.")
         user_question = st.text_input("Escribe tu pregunta aquí:")
+
+        if user_input:
+            responde = chatbot.get_response(user_input)
+            st.write(f"🤖: {response}")
+        chatbot_app()
         
         if st.button("Enviar"):
             if user_question:
