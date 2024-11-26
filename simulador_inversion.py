@@ -558,7 +558,8 @@ def simulador():
                 # Advertencia de proyección
                 st.warning("⚠️ Nota: El capital estimado es solo una proyección basada en datos históricos y no garantiza rendimientos futuros. El mercado puede ser volátil, y las inversiones están sujetas a riesgos.")
 
-                
+                if "guardar_simulacion" not in st.session_state:
+                    st.session_state.guardar_simulacion = False
                 # Botón para iniciar el proceso de guardar simulación
                 if st.button("Guardar simulación"):
                     # Mostrar cuadro de texto dinámico para asignar un nombre después de hacer clic
