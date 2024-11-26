@@ -426,7 +426,6 @@ def main():
     if st.session_state.logged_in:
         with st.sidebar:
             st.write(f"👋 **Bienvenido, {st.session_state.user[1]}**")  # Mostrar nombre del usuario
-            choice = st.sidebar.selectbox("Menú", menu, index=menu.index(st.session_state.page))
 
             if st.button("Cerrar Sesión"):
                 st.session_state.logged_in = False
