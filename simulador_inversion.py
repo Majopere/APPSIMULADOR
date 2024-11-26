@@ -215,7 +215,7 @@ def guardar_simulacion(user_id, nombre_simulacion, etfs, aportacion_inicial, ren
     conn.close()
 
 def name (): st.text_input("Nombre de la simulación", placeholder="Ingresa un nombre para esta simulación")
-
+    
 def simulador():
     st.title("Simulador Allianz OptiMaxx 🚀")
     primer_nombre = st.session_state.user[1].split()[0]
@@ -563,7 +563,7 @@ def simulador():
                 name()
                 guardar_simulacion(
                     user_id=st.session_state.user[0],  # ID del usuario actual
-                    nombre_simulacion=name ,
+                    nombre_simulacion=name.strip ,
                     etfs=etfs_seleccionados,
                     aportacion_inicial=aportacion_inicial,
                     rendimiento_proyectado=rendimiento_portafolio_ponderado * 100,
