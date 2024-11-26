@@ -417,8 +417,10 @@ def main():
 
     if not st.session_state.logged_in:
         menu = ["Inicio de Sesión", "Registro"]
+        choice = st.sidebar.selectbox("Menú", menu)
     else:
         menu = ["Simulador", "Asistente Virtual"]
+        choice = st.sidebar.selectbox("Menú", menu)
 
 
     if st.session_state.logged_in:
