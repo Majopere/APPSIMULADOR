@@ -581,10 +581,10 @@ def simulador():
                         else:
                             # Guardar en la base de datos
                             guardar_simulacion(
-                                user_id = st.session_state.user[0]  # ID del usuario actual
-                                etfs_guardados = ", ".join(etfs_seleccionados)  # Convertir ETFs seleccionados a texto
-                                pesos_guardados = ", ".join(map(str, pesos))  # Convertir pesos a texto
-                                aportaciones_guardadas = ", ".join([f"{anio}:{monto}" for anio, monto in zip(anios_aportacion, montos_aportacion)])
+                                user_id = st.session_state.user[0],  # ID del usuario actual
+                                etfs_guardados = ", ".join(etfs_seleccionados),  # Convertir ETFs seleccionados a texto
+                                pesos_guardados = ", ".join(map(str, pesos)),  # Convertir pesos a texto
+                                aportaciones_guardadas = ", ".join([f"{anio}:{monto}" for anio, monto in zip(anios_aportacion, montos_aportacion)]),
                                 resultados_guardados = f"Capital Final: ${capital_acumulado[-1]:,.2f} MXN"
                             )
 
