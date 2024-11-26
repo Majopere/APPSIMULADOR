@@ -560,6 +560,15 @@ def simulador():
 
                # Preguntar al usuario por el nombre de la simulación antes de guardarla
                 nombre_simulacion = st.text_input("Nombre de la simulación", placeholder="Ingresa un nombre para esta simulación")
+
+                guardar_simulacion(
+                    user_id=st.session_state.user[0],  # ID del usuario actual
+                    nombre_simulacion= nombre_simulacion ,
+                    etfs=etfs_seleccionados,
+                    aportacion_inicial=aportacion_inicial,
+                    rendimiento_proyectado=rendimiento_portafolio_ponderado * 100,
+                    capital_final=capital_acumulado[-1]
+                )
                 
                 # Botón para guardar la simulación
                 if st.button("Guardar Simulación"):
