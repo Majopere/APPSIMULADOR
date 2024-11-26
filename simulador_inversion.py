@@ -563,7 +563,7 @@ def simulador():
                 name()
                 guardar_simulacion(
                     user_id=st.session_state.user[0],  # ID del usuario actual
-                    nombre_simulacion=name.strip ,
+                    nombre_simulacion=name.strip() ,
                     etfs=etfs_seleccionados,
                     aportacion_inicial=aportacion_inicial,
                     rendimiento_proyectado=rendimiento_portafolio_ponderado * 100,
