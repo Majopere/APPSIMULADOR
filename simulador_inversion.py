@@ -10,6 +10,20 @@ import openai
 from transformers import AutoModelForCausalLM, AutoTokenizer
 import torch
 
+st.markdown(
+    """
+    <style>
+    body {
+        background-color: #F8F9FA;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+
+
+
 
 openai.api_key = st.secrets["OPENAI_API_KEY"]
 HUGGINGFACE_API_KEY= st.secrets["HUGGINGFACE_API_KEY"]
