@@ -558,14 +558,7 @@ def simulador():
                 # Advertencia de proyección
                 st.warning("⚠️ Nota: El capital estimado es solo una proyección basada en datos históricos y no garantiza rendimientos futuros. El mercado puede ser volátil, y las inversiones están sujetas a riesgos.")
 
-                guardar_simulacion(
-                    user_id=st.session_state.user[0],  # ID del usuario actual
-                    nombre_simulacion (),
-                    etfs=etfs_seleccionados,
-                    aportacion_inicial=aportacion_inicial,
-                    rendimiento_proyectado=rendimiento_portafolio_ponderado * 100,
-                    capital_final=capital_acumulado[-1]
-                )
+               
 
                 if "guardar_simulacion" not in st.session_state:
                     st.session_state.guardar_simulacion = False
@@ -587,11 +580,13 @@ def simulador():
                             st.error("⚠️ Por favor, asigna un nombre válido a la simulación.")
                         else:
                             # Guardar en la base de datos
-                            user_id = st.session_state.user[0]  # ID del usuario actual
-                            etfs_guardados = ", ".join(etfs_seleccionados)  # Convertir ETFs seleccionados a texto
-                            pesos_guardados = ", ".join(map(str, pesos))  # Convertir pesos a texto
-                            aportaciones_guardadas = ", ".join([f"{anio}:{monto}" for anio, monto in zip(anios_aportacion, montos_aportacion)])
-                            resultados_guardados = f"Capital Final: ${capital_acumulado[-1]:,.2f} MXN"
+                            guardar_simulacion(
+                                user_id = st.session_state.user[0]  # ID del usuario actual
+                                etfs_guardados = ", ".join(etfs_seleccionados)  # Convertir ETFs seleccionados a texto
+                                pesos_guardados = ", ".join(map(str, pesos))  # Convertir pesos a texto
+                                aportaciones_guardadas = ", ".join([f"{anio}:{monto}" for anio, monto in zip(anios_aportacion, montos_aportacion)])
+                                resultados_guardados = f"Capital Final: ${capital_acumulado[-1]:,.2f} MXN"
+                            )
 
                             conn = sqlite3.connect('usuarios.db')
                             c = conn.cursor()
