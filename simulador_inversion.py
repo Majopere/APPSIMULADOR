@@ -59,22 +59,22 @@ st.markdown(
     """
     <style>
     h1 {
-        color: #007BFF;
+        color: #1a188a;
         text-align: center;
         font-family: 'Arial Black', sans-serif;
         font-size: 40px;
     }
     h2 {
-        color: #0056b3;
+        color: #4260ba;
         text-align: left;
         font-family: 'Arial', sans-serif;
-        font-size: 32px;
+        font-size: 30px;
     }
     h3 {
-        color: #007BFF;
+        color: #4a4a4b;
         text-align: left;
         font-family: 'Verdana', sans-serif;
-        font-size: 24px;
+        font-size: 20px;
     }
     </style>
     """, unsafe_allow_html=True
