@@ -10,6 +10,19 @@ import openai
 from transformers import AutoModelForCausalLM, AutoTokenizer
 import torch
 
+openai.api_key = st.secrets["OPENAI_API_KEY"]
+HUGGINGFACE_API_KEY= st.secrets["HUGGINGFACE_API_KEY"]
+API_URL = "https://api-inference.huggingface.co/models/OpenAssistant/oasst-sft-4-pythia-12b-epoch-3.5"
+HEADERS = {"Authorization": f"Bearer {HUGGINGFACE_API_KEY}"}
+def query_huggingface(prompt):
+    payload = {"inputs": prompt}
+    response = requests.post(API_URL, headers=HEADERS, json=payload)
+    return response.json()
+
+
+# Configuración de la página de Streamlit
+st.set_page_config(page_title="Simulador Allianz OptiMaxx", layout="wide")
+
 st.markdown("""
     <style>
     .stButton>button {
@@ -27,22 +40,6 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-
-
-
-
-openai.api_key = st.secrets["OPENAI_API_KEY"]
-HUGGINGFACE_API_KEY= st.secrets["HUGGINGFACE_API_KEY"]
-API_URL = "https://api-inference.huggingface.co/models/OpenAssistant/oasst-sft-4-pythia-12b-epoch-3.5"
-HEADERS = {"Authorization": f"Bearer {HUGGINGFACE_API_KEY}"}
-def query_huggingface(prompt):
-    payload = {"inputs": prompt}
-    response = requests.post(API_URL, headers=HEADERS, json=payload)
-    return response.json()
-
-
-# Configuración de la página de Streamlit
-st.set_page_config(page_title="Simulador Allianz OptiMaxx", layout="wide")
 
 
 
