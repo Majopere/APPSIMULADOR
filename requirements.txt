@@ -3,7 +3,6 @@ googletrans==4.0.0-rc1
 plotly
 bcrypt
 openai
-sqlite3
 streamlit
 pandas
 numpy
