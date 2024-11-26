@@ -214,6 +214,7 @@ def guardar_simulacion(user_id, nombre_simulacion, etfs, aportacion_inicial, ren
     conn.commit()
     conn.close()
 
+def name = st.text_input("Nombre de la simulación", placeholder="Ingresa un nombre para esta simulación")
 
 def simulador():
     st.title("Simulador Allianz OptiMaxx 🚀")
@@ -559,8 +560,7 @@ def simulador():
                 st.warning("⚠️ Nota: El capital estimado es solo una proyección basada en datos históricos y no garantiza rendimientos futuros. El mercado puede ser volátil, y las inversiones están sujetas a riesgos.")
 
                # Preguntar al usuario por el nombre de la simulación antes de guardarla
-                name = st.text_input("Nombre de la simulación", placeholder="Ingresa un nombre para esta simulación")
-
+                name()
                 guardar_simulacion(
                     user_id=st.session_state.user[0],  # ID del usuario actual
                     nombre_simulacion=name ,
