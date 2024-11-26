@@ -556,6 +556,17 @@ def main():
         elif choice == "Chatbot":
             interfaz_chatbot()
             st.write("preguntame")
+            st.title("🤖 Chatbot - Hugging Face")
+            input_text = st.text_input("Escribe tu pregunta:")
+            if st.button("Enviar"):
+                if input_text:
+                    with st.spinner("Pensando..."):
+                        response = query_huggingface({"inputs": input_text})
+                        respuesta = response.get("generated_text", "No se obtuvo respuesta.")
+                        st.write(f"**Chatbot:** {respuesta}")
+
+if __name__ == "__main__":
+    interfaz_chatbot()
 
 # Ejecutar la aplicación
 if __name__ == "__main__":
