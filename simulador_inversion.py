@@ -214,7 +214,7 @@ def guardar_simulacion(user_id, nombre_simulacion, etfs, aportacion_inicial, ren
     conn.commit()
     conn.close()
 
-def name = (): st.text_input("Nombre de la simulación", placeholder="Ingresa un nombre para esta simulación")
+def name (): st.text_input("Nombre de la simulación", placeholder="Ingresa un nombre para esta simulación")
 
 def simulador():
     st.title("Simulador Allianz OptiMaxx 🚀")
