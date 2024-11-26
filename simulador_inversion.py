@@ -10,6 +10,22 @@ import openai
 from transformers import AutoModelForCausalLM, AutoTokenizer
 import torch
 
+st.markdown("""
+    <style>
+    .stButton>button {
+        background-color: #007BFF; /* Color de fondo azul */
+        color: white; /* Color del texto */
+        font-size: 16px; /* Tamaño del texto */
+        border-radius: 10px; /* Bordes redondeados */
+        padding: 10px 20px; /* Espaciado interno */
+        border: none; /* Sin bordes */
+    }
+    .stButton>button:hover {
+        background-color: #0056b3; /* Color de fondo al pasar el mouse */
+        color: white;
+    }
+    </style>
+    """, unsafe_allow_html=True)
 
 
 
