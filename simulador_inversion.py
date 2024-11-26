@@ -560,11 +560,9 @@ def simulador():
                 st.warning("⚠️ Nota: El capital estimado es solo una proyección basada en datos históricos y no garantiza rendimientos futuros. El mercado puede ser volátil, y las inversiones están sujetas a riesgos.")
 
                # Preguntar al usuario por el nombre de la simulación antes de guardarla
-                get_simulation_name()
-                name = get_simulation_name
+                
                 guardar_simulacion(
                     user_id=st.session_state.user[0],  # ID del usuario actual
-                    nombre_simulacion=name.strip() ,
                     etfs=etfs_seleccionados,
                     aportacion_inicial=aportacion_inicial,
                     rendimiento_proyectado=rendimiento_portafolio_ponderado * 100,
