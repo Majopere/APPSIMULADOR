@@ -598,7 +598,7 @@ def main():
         menu = ["Inicio de Sesión", "Registro"]
         choice = st.sidebar.selectbox("Menú", menu)
     else:
-        menu = ["Simulador", "Asistente Virtual", "Simulaciones Guardadas"]
+        menu = ["Simulador", "Asistente Virtual",]
         choice = st.sidebar.selectbox("Menú", menu)
 
 
@@ -674,11 +674,7 @@ def main():
             else:
                 st.warning("Por favor, escribe una pregunta antes de enviar.")
 
-    
-                
-    elif choice == "Simulaciones Guardadas":
-        mostrar_simulaciones(st.session_state.user[0])
-            
+
 
 # Ejecutar la aplicación
 if __name__ == "__main__":
