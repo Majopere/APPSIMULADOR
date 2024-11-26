@@ -569,12 +569,13 @@ def simulador():
                         # Llamada a la función para guardar la simulación con el nombre proporcionado
                         guardar_simulacion(
                             user_id=st.session_state.user[0],  # ID del usuario actual
-                            nombre_simulacion=nombre_simulacion.strip(),  # Nombre ingresado por el usuario
+                            nombre_simulacion=nombre_simulacion ,
                             etfs=etfs_seleccionados,
                             aportacion_inicial=aportacion_inicial,
                             rendimiento_proyectado=rendimiento_portafolio_ponderado * 100,
                             capital_final=capital_acumulado[-1]
                         )
+                        
                         st.success(f"Simulación '{nombre_simulacion.strip()}' guardada exitosamente.")
 
 
