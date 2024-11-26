@@ -19,7 +19,7 @@ st.set_page_config(page_title="Simulador Allianz OptiMaxx", layout="wide")
 st.markdown("""
     <style>
     .stButton>button {
-        background-color: #007BFF; /* Color de fondo azul */
+        background-color: #b3b7b8; /* Color de fondo azul */
         color: white; /* Color del texto */
         font-size: 16px; /* Tamaño del texto */
         border-radius: 10px; /* Bordes redondeados */
@@ -27,7 +27,7 @@ st.markdown("""
         border: none; /* Sin bordes */
     }
     .stButton>button:hover {
-        background-color: #0056b3; /* Color de fondo al pasar el mouse */
+        background-color: #151515; /* Color de fondo al pasar el mouse */
         color: white;
     }
     </style>
