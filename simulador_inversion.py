@@ -566,23 +566,42 @@ def simulador():
                     rendimiento_proyectado=rendimiento_portafolio_ponderado * 100,
                     capital_final=capital_acumulado[-1]
                 )
+                # Botón para iniciar el proceso de guardar simulación
                 if st.button("Guardar simulación"):
-                    # Guardar la simulación en la base de datos
-                    user_id = st.session_state.user[0]  # Asume que el ID del usuario está en la sesión
-                    etfs_guardados = ", ".join(etfs_seleccionados)  # Convertir a texto los ETFs seleccionados
-                    pesos_guardados = ", ".join(map(str, pesos))  # Convertir los pesos a texto
-                    aportaciones_guardadas = ", ".join([f"{anio}:{monto}" for anio, monto in zip(anios_aportacion, montos_aportacion)])
-                    resultados_guardados = f"Capital Final: ${capital_acumulado[-1]:,.2f} MXN"
+                    # Mostrar cuadro de texto dinámico para asignar un nombre después de hacer clic
+                    st.session_state.guardar_simulacion = True
                 
-                    # Inserta en la tabla de simulaciones
-                    conn = sqlite3.connect('usuarios.db')
-                    c = conn.cursor()
-                    c.execute('INSERT INTO simulations (user_id, etfs, weights, initial_amount, additional_contributions, horizon, results) VALUES (?, ?, ?, ?, ?, ?, ?)',
-                              (user_id, etfs_guardados, pesos_guardados, aportacion_inicial, aportaciones_guardadas, horizonte_inversion, resultados_guardados))
-                    conn.commit()
-                    conn.close()
+                # Si el usuario presionó "Guardar simulación"
+                if "guardar_simulacion" in st.session_state and st.session_state.guardar_simulacion:
+                    st.write("### Por favor, asigna un nombre a tu simulación")
+                    
+                    # Cuadro de texto para el nombre de la simulación
+                    nombre_simulacion = st.text_input("Nombre de la inversión:", placeholder="Ejemplo: Mi primera inversión")
                 
-                    st.success("¡Simulación guardada exitosamente!")
+                    # Botón para confirmar y guardar la simulación
+                    if st.button("Confirmar nombre y guardar"):
+                        if not nombre_inversion.strip():
+                            st.error("⚠️ Por favor, asigna un nombre válido a la simulación.")
+                        else:
+                            # Guardar en la base de datos
+                            user_id = st.session_state.user[0]  # ID del usuario actual
+                            etfs_guardados = ", ".join(etfs_seleccionados)  # Convertir ETFs seleccionados a texto
+                            pesos_guardados = ", ".join(map(str, pesos))  # Convertir pesos a texto
+                            aportaciones_guardadas = ", ".join([f"{anio}:{monto}" for anio, monto in zip(anios_aportacion, montos_aportacion)])
+                            resultados_guardados = f"Capital Final: ${capital_acumulado[-1]:,.2f} MXN"
+
+                            conn = sqlite3.connect('usuarios.db')
+                            c = conn.cursor()
+                            c.execute('''
+                                INSERT INTO simulations (user_id, etfs, weights, initial_amount, additional_contributions, horizon, results, name)
+                                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                            ''', (user_id, etfs_guardados, pesos_guardados, aportacion_inicial, aportaciones_guardadas, horizonte_inversion, resultados_guardados, nombre_inversion))
+                            conn.commit()
+                            conn.close()
+                
+                            st.success(f"✅ Simulación '{nombre_inversion}' guardada exitosamente.")
+                            st.session_state.guardar_simulacion = False  # Reiniciar el estado para futuras simulaciones
+
 
 
 def mostrar_simulaciones(user_id):
