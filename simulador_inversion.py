@@ -561,10 +561,10 @@ def simulador():
 
                # Preguntar al usuario por el nombre de la simulación antes de guardarla
                 get_simulation_name()
-                nombre_simulacion = get_simulation_name
+                name = get_simulation_name
                 guardar_simulacion(
                     user_id=st.session_state.user[0],  # ID del usuario actual
-                    nombre_simulacion=nombre_simulacion.strip() ,
+                    nombre_simulacion=name.strip() ,
                     etfs=etfs_seleccionados,
                     aportacion_inicial=aportacion_inicial,
                     rendimiento_proyectado=rendimiento_portafolio_ponderado * 100,
