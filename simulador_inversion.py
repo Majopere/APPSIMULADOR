@@ -566,6 +566,24 @@ def simulador():
                     rendimiento_proyectado=rendimiento_portafolio_ponderado * 100,
                     capital_final=capital_acumulado[-1]
                 )
+                if st.button("Guardar simulación"):
+                    # Guardar la simulación en la base de datos
+                    user_id = st.session_state.user[0]  # Asume que el ID del usuario está en la sesión
+                    etfs_guardados = ", ".join(etfs_seleccionados)  # Convertir a texto los ETFs seleccionados
+                    pesos_guardados = ", ".join(map(str, pesos))  # Convertir los pesos a texto
+                    aportaciones_guardadas = ", ".join([f"{anio}:{monto}" for anio, monto in zip(anios_aportacion, montos_aportacion)])
+                    resultados_guardados = f"Capital Final: ${capital_acumulado[-1]:,.2f} MXN"
+                
+                    # Inserta en la tabla de simulaciones
+                    conn = sqlite3.connect('usuarios.db')
+                    c = conn.cursor()
+                    c.execute('INSERT INTO simulations (user_id, etfs, weights, initial_amount, additional_contributions, horizon, results) VALUES (?, ?, ?, ?, ?, ?, ?)',
+                              (user_id, etfs_guardados, pesos_guardados, aportacion_inicial, aportaciones_guardadas, horizonte_inversion, resultados_guardados))
+                    conn.commit()
+                    conn.close()
+                
+                    st.success("¡Simulación guardada exitosamente!")
+
 
 def mostrar_simulaciones(user_id):
     conn = sqlite3.connect('usuarios.db')
@@ -681,25 +699,24 @@ def main():
             else:
                 st.warning("Por favor, escribe una pregunta antes de enviar.")
 
-        elif choice == "Chatbot":
-            interfaz_chatbot()
-            st.write("preguntame")
-            st.title("🤖 Chatbot - Hugging Face")
-            input_text = st.text_input("Escribe tu pregunta:")
-            if st.button("Enviar"):
-                if input_text:
-                    with st.spinner("Pensando..."):
-                        response = query_huggingface({"inputs": input_text})
-                        respuesta = response.get("generated_text", "No se obtuvo respuesta.")
-                        st.write(f"**Chatbot:** {respuesta}")
+    elif choice == "Chatbot":
+        interfaz_chatbot()
+        st.write("preguntame")
+        st.title("🤖 Chatbot - Hugging Face")
+        input_text = st.text_input("Escribe tu pregunta:")
+        if st.button("Enviar"):
+            if input_text:
+                with st.spinner("Pensando..."):
+                    response = query_huggingface({"inputs": input_text})
+                    respuesta = response.get("generated_text", "No se obtuvo respuesta.")
+                    st.write(f"**Chatbot:** {respuesta}")
 
-            if __name__ == "__main__":
-                interfaz_chatbot()
-        elif choice == "Simulaciones Guardadas":
-            if st.session_state.logged_in:
-                mostrar_simulaciones(st.session_state.user[0])
-            else:
-                st.warning("Inicia sesión para ver tus simulaciones.")
+        if __name__ == "__main__":
+            interfaz_chatbot()
+                
+    elif choice == "Simulaciones Guardadas":
+        mostrar_simulaciones(st.session_state.user[0])
+            
 
 # Ejecutar la aplicación
 if __name__ == "__main__":
