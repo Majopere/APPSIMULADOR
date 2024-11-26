@@ -554,30 +554,7 @@ def main():
                 st.warning("Por favor, escribe una pregunta antes de enviar.")
 
         elif choice == "Chatbot":
-            st.title("🤖 Chatbot - Pregúntame sobre el simulador o inversiones")
-    
-            tokenizer, model = cargar_modelo()
-             
-            
-            # Variables de sesión para guardar el historial del chat
-            if "chat_history_ids" not in st.session_state:
-                st.session_state.chat_history_ids = None
-            if "chat_log" not in st.session_state:
-                st.session_state.chat_log = []
-        
-            # Entrada del usuario
-            input_text = st.text_input("Escribe tu pregunta aquí:")
-            if st.button("Enviar") and input_text:
-                with st.spinner("Pensando..."):
-                    respuesta, chat_history_ids = responder_chatbot(input_text, st.session_state.chat_history_ids, tokenizer, model)
-                    st.session_state.chat_history_ids = chat_history_ids
-                    st.session_state.chat_log.append((input_text, respuesta))
-        
-            # Mostrar historial del chat
-            st.subheader("Historial de conversación:")
-            for pregunta, respuesta in st.session_state.chat_log:
-                st.markdown(f"**Tú:** {pregunta}")
-                st.markdown(f"**Chatbot:** {respuesta}")
+            interfaz_chatbot()
 
 # Ejecutar la aplicación
 if __name__ == "__main__":
