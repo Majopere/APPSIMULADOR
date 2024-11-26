@@ -15,6 +15,7 @@ openai.api_key = st.secrets["OPENAI_API_KEY"]
 # Configuración de la página de Streamlit
 st.set_page_config(page_title="Simulador Allianz OptiMaxx", layout="wide")
 
+#botones y fondo
 st.markdown("""
     <style>
     .stButton>button {
@@ -31,7 +32,7 @@ st.markdown("""
     }
     </style>
     """, unsafe_allow_html=True)
-
+#tablas
 st.markdown(
     """
     <style>
@@ -49,6 +50,31 @@ st.markdown(
     th {
         background-color: #007BFF;
         color: white;
+    }
+    </style>
+    """, unsafe_allow_html=True
+)
+#letra 
+st.markdown(
+    """
+    <style>
+    h1 {
+        color: #007BFF;
+        text-align: center;
+        font-family: 'Arial Black', sans-serif;
+        font-size: 40px;
+    }
+    h2 {
+        color: #0056b3;
+        text-align: left;
+        font-family: 'Arial', sans-serif;
+        font-size: 32px;
+    }
+    h3 {
+        color: #007BFF;
+        text-align: left;
+        font-family: 'Verdana', sans-serif;
+        font-size: 24px;
     }
     </style>
     """, unsafe_allow_html=True
@@ -606,8 +632,8 @@ def main():
                         respuesta = response.get("generated_text", "No se obtuvo respuesta.")
                         st.write(f"**Chatbot:** {respuesta}")
 
-if __name__ == "__main__":
-    interfaz_chatbot()
+            if __name__ == "__main__":
+                interfaz_chatbot()
 
 # Ejecutar la aplicación
 if __name__ == "__main__":
