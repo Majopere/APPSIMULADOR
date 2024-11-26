@@ -7,18 +7,13 @@ from googletrans import Translator
 import sqlite3
 import bcrypt
 import openai
-from chatterbot import ChatBot
-from chatterbot.trainers import ChatterBotCorpusTrainer
+from transformers import AutoModelForCausalLM, AutoTokenizer
+import torch
 
 
 openai.api_key = st.secrets["OPENAI_API_KEY"]
 
-# Crear un chatbot
-chatbot = ChatBot('SimuladorBot')
 
-# Entrenar el chatbot con datos en español
-trainer = ChatterBotCorpusTrainer(chatbot)
-trainer.train('chatterbot.corpus.spanish')
 
 # Configuración de la página de Streamlit
 st.set_page_config(page_title="Simulador Allianz OptiMaxx", layout="wide")
@@ -67,6 +62,54 @@ def get_user_by_email(correo):
 
 # Crear tabla de usuarios al inicio
 create_user_table()
+
+@st.cache_resource
+def cargar_modelo():
+    modelo = "microsoft/DialoGPT-medium"  # Puedes cambiar a "small" o "large" según prefieras
+    tokenizer = AutoTokenizer.from_pretrained(modelo)
+    model = AutoModelForCausalLM.from_pretrained(modelo)
+    return tokenizer, model
+
+# Función para generar una respuesta del chatbot
+def responder_chatbot(input_text, chat_history_ids, tokenizer, model):
+    # Tokenizar la entrada del usuario
+    new_user_input_ids = tokenizer.encode(input_text + tokenizer.eos_token, return_tensors="pt")
+
+    # Concatenar el historial de chat con la nueva entrada del usuario
+    bot_input_ids = torch.cat([chat_history_ids, new_user_input_ids], dim=-1) if chat_history_ids is not None else new_user_input_ids
+
+    # Generar respuesta del modelo
+    chat_history_ids = model.generate(bot_input_ids, max_length=1000, pad_token_id=tokenizer.eos_token_id)
+
+    # Decodificar la respuesta generada
+    respuesta = tokenizer.decode(chat_history_ids[:, bot_input_ids.shape[-1]:][0], skip_special_tokens=True)
+
+    return respuesta, chat_history_ids
+
+def interfaz_chatbot():
+    st.title("🤖 Chatbot - Pregúntame sobre el simulador o inversiones")
+    
+    tokenizer, model = cargar_modelo()
+
+    # Variables de sesión para guardar el historial del chat
+    if "chat_history_ids" not in st.session_state:
+        st.session_state.chat_history_ids = None
+    if "chat_log" not in st.session_state:
+        st.session_state.chat_log = []
+
+    # Entrada del usuario
+    input_text = st.text_input("Escribe tu pregunta aquí:")
+    if st.button("Enviar") and input_text:
+        with st.spinner("Pensando..."):
+            respuesta, chat_history_ids = responder_chatbot(input_text, st.session_state.chat_history_ids, tokenizer, model)
+            st.session_state.chat_history_ids = chat_history_ids
+            st.session_state.chat_log.append((input_text, respuesta))
+
+    # Mostrar historial del chat
+    st.subheader("Historial de conversación:")
+    for pregunta, respuesta in st.session_state.chat_log:
+        st.markdown(f"**Tú:** {pregunta}")
+        st.markdown(f"**Chatbot:** {respuesta}")
 
 def simulador():
     st.title("Simulador Allianz OptiMaxx 🚀")
@@ -427,7 +470,7 @@ def main():
         menu = ["Inicio de Sesión", "Registro"]
         choice = st.sidebar.selectbox("Menú", menu)
     else:
-        menu = ["Simulador", "Asistente Virtual"]
+        menu = ["Simulador", "Asistente Virtual", "Chatbot"]
         choice = st.sidebar.selectbox("Menú", menu)
 
 
@@ -484,11 +527,6 @@ def main():
         st.write("Haz preguntas sobre finanzas, ETFs o cualquier duda que tengas sobre el simulador.")
         user_question = st.text_input("Escribe tu pregunta aquí:")
 
-        if user_input:
-            responde = chatbot.get_response(user_input)
-            st.write(f"🤖: {response}")
-        chatbot_app()
-        
         if st.button("Enviar"):
             if user_question:
                 with st.spinner("Pensando..."):
@@ -508,7 +546,8 @@ def main():
             else:
                 st.warning("Por favor, escribe una pregunta antes de enviar.")
 
-
+        elif choice == "Chatbot":
+            interfaz_chatbot()
 
 # Ejecutar la aplicación
 if __name__ == "__main__":
