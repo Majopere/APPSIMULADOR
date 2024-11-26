@@ -573,7 +573,7 @@ def simulador():
                 
                     # Botón para confirmar y guardar la simulación
                     if st.button("Confirmar nombre y guardar"):
-                        if not nombre_inversion.strip():
+                        if not nombre_simulacion.strip():
                             st.error("⚠️ Por favor, asigna un nombre válido a la simulación.")
                         else:
                             # Guardar en la base de datos
@@ -588,11 +588,11 @@ def simulador():
                             c.execute('''
                                 INSERT INTO simulations (user_id, etfs, weights, initial_amount, additional_contributions, horizon, results, name)
                                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-                            ''', (user_id, etfs_guardados, pesos_guardados, aportacion_inicial, aportaciones_guardadas, horizonte_inversion, resultados_guardados, nombre_inversion))
+                            ''', (user_id, etfs_guardados, pesos_guardados, aportacion_inicial, aportaciones_guardadas, horizonte_inversion, resultados_guardados, nombre_simulacion))
                             conn.commit()
                             conn.close()
                 
-                            st.success(f"✅ Simulación '{nombre_inversion}' guardada exitosamente.")
+                            st.success(f"✅ Simulación '{nombre_simulacion}' guardada exitosamente.")
                             st.session_state.guardar_simulacion = False  # Reiniciar el estado para futuras simulaciones
 
 
