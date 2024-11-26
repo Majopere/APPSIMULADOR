@@ -44,7 +44,7 @@ st.markdown(
     <style>
     table {
         font-size: 16px;
-        color: #b3b7b8;
+        color: white;
         border-collapse: collapse;
         width: 100%;
     }
@@ -54,7 +54,7 @@ st.markdown(
         padding: 8px;
     }
     th {
-        background-color: #007BFF;
+        background-color: #b3b7b8;
         color: white;
     }
     </style>
