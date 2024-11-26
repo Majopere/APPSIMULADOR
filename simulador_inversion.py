@@ -579,31 +579,6 @@ def simulador():
                         except Exception as e:
                             st.error(f"Error al guardar la simulación: {e}")
 
-                guardar_simulacion(
-                    user_id=st.session_state.user[0],  # ID del usuario actual
-                    etfs=etfs_seleccionados,
-                    aportacion_inicial=aportacion_inicial,
-                    rendimiento_proyectado=rendimiento_portafolio_ponderado * 100,
-                    capital_final=capital_acumulado[-1]
-                )
-                
-                # Botón para guardar la simulación
-                if st.button("Guardar Simulación"):
-                    if not nombre_simulacion.strip():
-                        st.error("Por favor, ingresa un nombre para la simulación antes de guardarla.")
-                    else:
-                        # Llamada a la función para guardar la simulación con el nombre proporcionado
-                        guardar_simulacion(
-                            user_id=st.session_state.user[0],  # ID del usuario actual
-                            nombre_simulacion=nombre_simulacion ,
-                            etfs=etfs_seleccionados,
-                            aportacion_inicial=aportacion_inicial,
-                            rendimiento_proyectado=rendimiento_portafolio_ponderado * 100,
-                            capital_final=capital_acumulado[-1]
-                        )
-                        
-                        st.success(f"Simulación '{nombre_simulacion.strip()}' guardada exitosamente.")
-
 
                
 
