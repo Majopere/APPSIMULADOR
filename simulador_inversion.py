@@ -560,24 +560,19 @@ def simulador():
                 st.warning("⚠️ Nota: El capital estimado es solo una proyección basada en datos históricos y no garantiza rendimientos futuros. El mercado puede ser volátil, y las inversiones están sujetas a riesgos.")
 
                # Preguntar al usuario por el nombre de la simulación antes de guardarla
-                get_simulation_name()
-                nombre_simulacion=get_simulation_name
                 if st.button("Guardar Simulación"):
-                    if not st.session_state.nombre_simulacion.strip():
-                        st.error("Por favor, ingresa un nombre para la simulación antes de guardarla.")
-                    else:
-                        try:
-                            guardar_simulacion(
-                                user_id=st.session_state.user[0],  # ID del usuario actual
-                                nombre_simulacion=st.session_state.nombre_simulacion.strip(),
-                                etfs=etfs_seleccionados,
-                                aportacion_inicial=aportacion_inicial,
-                                rendimiento_proyectado=rendimiento_portafolio_ponderado * 100,
-                                capital_final=capital_acumulado[-1]
-                            )
-                            st.success(f"Simulación '{st.session_state.nombre_simulacion.strip()}' guardada exitosamente.")
-                        except Exception as e:
-                            st.error(f"Error al guardar la simulación: {e}")
+                    guardar_simulacion(
+                        user_id=st.session_state.user[0],  # ID del usuario actual
+                        nombre_simulacion= "Simulación guardada",
+                        etfs=etfs_seleccionados,
+                        aportacion_inicial=aportacion_inicial,
+                        rendimiento_proyectado=rendimiento_portafolio_ponderado * 100,
+                        capital_final=capital_acumulado[-1]
+                    )
+                else: 
+                    st.error(f"Error al guardar la simulación: {e}")
+                
+                
 
 
                
@@ -604,7 +599,7 @@ def mostrar_simulaciones(user_id):
             """)
     else:
         st.info("No tienes simulaciones guardadas.")
-   
+
 
 
 # Pantallas de la aplicación
@@ -621,7 +616,7 @@ def main():
         menu = ["Inicio de Sesión", "Registro"]
         choice = st.sidebar.selectbox("Menú", menu)
     else:
-        menu = ["Simulador", "Asistente Virtual", "Chatbot", "Simulaciones Guardadas"]
+        menu = ["Simulador", "Asistente Virtual", "Simulaciones Guardadas"]
         choice = st.sidebar.selectbox("Menú", menu)
 
 
@@ -697,20 +692,7 @@ def main():
             else:
                 st.warning("Por favor, escribe una pregunta antes de enviar.")
 
-    elif choice == "Chatbot":
-        interfaz_chatbot()
-        st.write("preguntame")
-        st.title("🤖 Chatbot - Hugging Face")
-        input_text = st.text_input("Escribe tu pregunta:")
-        if st.button("Enviar"):
-            if input_text:
-                with st.spinner("Pensando..."):
-                    response = query_huggingface({"inputs": input_text})
-                    respuesta = response.get("generated_text", "No se obtuvo respuesta.")
-                    st.write(f"**Chatbot:** {respuesta}")
-
-        if __name__ == "__main__":
-            interfaz_chatbot()
+    
                 
     elif choice == "Simulaciones Guardadas":
         mostrar_simulaciones(st.session_state.user[0])
