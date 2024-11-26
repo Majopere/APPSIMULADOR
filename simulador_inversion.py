@@ -189,6 +189,30 @@ def interfaz_chatbot():
         st.markdown(f"**Chatbot:** {respuesta}")
 
 
+def create_simulations_table():
+    conn = sqlite3.connect('usuarios.db')
+    c = conn.cursor()
+    c.execute('''CREATE TABLE IF NOT EXISTS simulaciones (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    user_id INTEGER,
+                    nombre_simulacion TEXT,
+                    etfs TEXT,
+                    aportacion_inicial REAL,
+                    rendimiento_proyectado REAL,
+                    capital_final REAL,
+                    fecha_simulacion TEXT,
+                    FOREIGN KEY (user_id) REFERENCES users(id)
+                 )''')
+    conn.commit()
+    conn.close()
+create_simulations_table()
+def guardar_simulacion(user_id, nombre_simulacion, etfs, aportacion_inicial, rendimiento_proyectado, capital_final):
+    conn = sqlite3.connect('usuarios.db')
+    c = conn.cursor()
+    c.execute('INSERT INTO simulaciones (user_id, nombre_simulacion, etfs, aportacion_inicial, rendimiento_proyectado, capital_final, fecha_simulacion) VALUES (?, ?, ?, ?, ?, ?, ?)',
+              (user_id, nombre_simulacion, ', '.join(etfs), aportacion_inicial, rendimiento_proyectado, capital_final, pd.Timestamp.now().strftime('%Y-%m-%d %H:%M:%S')))
+    conn.commit()
+    conn.close()
 
 
 def simulador():
@@ -533,6 +557,37 @@ def simulador():
                 st.write(f"Al final del horizonte de inversión de {horizonte_inversion} años, el capital estimado es de: **${capital_acumulado[-1]:,.2f} MXN**.")
                 # Advertencia de proyección
                 st.warning("⚠️ Nota: El capital estimado es solo una proyección basada en datos históricos y no garantiza rendimientos futuros. El mercado puede ser volátil, y las inversiones están sujetas a riesgos.")
+
+                guardar_simulacion(
+                    user_id=st.session_state.user[0],  # ID del usuario actual
+                    nombre_simulacion="Mi Primera Simulación",
+                    etfs=etfs_seleccionados,
+                    aportacion_inicial=aportacion_inicial,
+                    rendimiento_proyectado=rendimiento_portafolio_ponderado * 100,
+                    capital_final=capital_acumulado[-1]
+                )
+
+def mostrar_simulaciones(user_id):
+    conn = sqlite3.connect('usuarios.db')
+    c = conn.cursor()
+    c.execute('SELECT nombre_simulacion, etfs, aportacion_inicial, rendimiento_proyectado, capital_final, fecha_simulacion FROM simulaciones WHERE user_id = ?', (user_id,))
+    simulaciones = c.fetchall()
+    conn.close()
+
+    if simulaciones:
+        st.subheader("Tus Simulaciones Guardadas")
+        for simulacion in simulaciones:
+            st.markdown(f"""
+            **Nombre:** {simulacion[0]}  
+            **ETFs:** {simulacion[1]}  
+            **Aportación Inicial:** ${simulacion[2]:,.2f}  
+            **Rendimiento Proyectado:** {simulacion[3]:.2f}%  
+            **Capital Final:** ${simulacion[4]:,.2f}  
+            **Fecha:** {simulacion[5]}  
+            ---  
+            """)
+    else:
+        st.info("No tienes simulaciones guardadas.")
    
 
 
@@ -550,7 +605,7 @@ def main():
         menu = ["Inicio de Sesión", "Registro"]
         choice = st.sidebar.selectbox("Menú", menu)
     else:
-        menu = ["Simulador", "Asistente Virtual", "Chatbot"]
+        menu = ["Simulador", "Asistente Virtual", "Chatbot", "Simulaciones Guardadas"]
         choice = st.sidebar.selectbox("Menú", menu)
 
 
@@ -640,6 +695,11 @@ def main():
 
             if __name__ == "__main__":
                 interfaz_chatbot()
+        elif choice == "Simulaciones Guardadas":
+            if st.session_state.logged_in:
+                mostrar_simulaciones(st.session_state.user[0])
+            else:
+                st.warning("Inicia sesión para ver tus simulaciones.")
 
 # Ejecutar la aplicación
 if __name__ == "__main__":
