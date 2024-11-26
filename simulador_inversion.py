@@ -558,48 +558,27 @@ def simulador():
                 # Advertencia de proyección
                 st.warning("⚠️ Nota: El capital estimado es solo una proyección basada en datos históricos y no garantiza rendimientos futuros. El mercado puede ser volátil, y las inversiones están sujetas a riesgos.")
 
+               # Preguntar al usuario por el nombre de la simulación antes de guardarla
+                nombre_simulacion = st.text_input("Nombre de la simulación", placeholder="Ingresa un nombre para esta simulación")
+                
+                # Botón para guardar la simulación
+                if st.button("Guardar Simulación"):
+                    if not nombre_simulacion.strip():
+                        st.error("Por favor, ingresa un nombre para la simulación antes de guardarla.")
+                    else:
+                        # Llamada a la función para guardar la simulación con el nombre proporcionado
+                        guardar_simulacion(
+                            user_id=st.session_state.user[0],  # ID del usuario actual
+                            nombre_simulacion=nombre_simulacion.strip(),  # Nombre ingresado por el usuario
+                            etfs=etfs_seleccionados,
+                            aportacion_inicial=aportacion_inicial,
+                            rendimiento_proyectado=rendimiento_portafolio_ponderado * 100,
+                            capital_final=capital_acumulado[-1]
+                        )
+                        st.success(f"Simulación '{nombre_simulacion.strip()}' guardada exitosamente.")
+
+
                
-
-                if "guardar_simulacion" not in st.session_state:
-                    st.session_state.guardar_simulacion = False
-                # Botón para iniciar el proceso de guardar simulación
-                if st.button("Guardar simulación"):
-                    # Mostrar cuadro de texto dinámico para asignar un nombre después de hacer clic
-                    st.session_state.guardar_simulacion = True
-                
-                # Si el usuario presionó "Guardar simulación"
-                if "guardar_simulacion" in st.session_state and st.session_state.guardar_simulacion:
-                    st.write("### Por favor, asigna un nombre a tu simulación")
-                    
-                    # Cuadro de texto para el nombre de la simulación
-                    nombre_simulacion = st.text_input("Nombre de la inversión:", placeholder="Ejemplo: Mi primera inversión")
-                
-                    # Botón para confirmar y guardar la simulación
-                    if st.button("Confirmar nombre y guardar"):
-                        if not nombre_simulacion.strip():
-                            st.error("⚠️ Por favor, asigna un nombre válido a la simulación.")
-                        else:
-                            # Guardar en la base de datos
-                            guardar_simulacion(
-                                user_id = st.session_state.user[0],  # ID del usuario actual
-                                etfs_guardados = ", ".join(etfs_seleccionados),  # Convertir ETFs seleccionados a texto
-                                pesos_guardados = ", ".join(map(str, pesos)),  # Convertir pesos a texto
-                                aportaciones_guardadas = ", ".join([f"{anio}:{monto}" for anio, monto in zip(anios_aportacion, montos_aportacion)]),
-                                resultados_guardados = f"Capital Final: ${capital_acumulado[-1]:,.2f} MXN"
-                            )
-
-                            conn = sqlite3.connect('usuarios.db')
-                            c = conn.cursor()
-                            c.execute('''
-                                INSERT INTO simulations (user_id, etfs, weights, initial_amount, additional_contributions, horizon, results, name)
-                                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-                            ''', (user_id, etfs_guardados, pesos_guardados, aportacion_inicial, aportaciones_guardadas, horizonte_inversion, resultados_guardados, nombre_simulacion))
-                            conn.commit()
-                            conn.close()
-                
-                            st.success(f"✅ Simulación '{nombre_simulacion}' guardada exitosamente.")
-                            st.session_state.guardar_simulacion = False  # Reiniciar el estado para futuras simulaciones
-
 
 
 def mostrar_simulaciones(user_id):
