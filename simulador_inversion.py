@@ -555,6 +555,7 @@ def main():
 
         elif choice == "Chatbot":
             interfaz_chatbot()
+            st.write("preguntame")
 
 # Ejecutar la aplicación
 if __name__ == "__main__":
