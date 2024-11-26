@@ -12,7 +12,7 @@ import torch
 
 
 openai.api_key = st.secrets["OPENAI_API_KEY"]
-HUGGINGFACE_API_KEY="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"
+HUGGINGFACE_API_KEY= st.secrets["HUGGINGFACE_API_KEY"]
 API_URL = "https://api-inference.huggingface.co/models/OpenAssistant/oasst-sft-4-pythia-12b-epoch-3.5"
 HEADERS = {"Authorization": f"Bearer {HUGGINGFACE_API_KEY}"}
 def query_huggingface(prompt):
