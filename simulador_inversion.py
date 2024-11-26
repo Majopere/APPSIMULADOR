@@ -30,6 +30,12 @@ st.markdown("""
         background-color: #686564; /* Color de fondo al pasar el mouse */
         color: white;
     }
+
+    .stButton>button:active {
+        background-color: #b3b7b8; /* Color del fondo al presionar */
+        color: #FFFFFF; /* Mismo color para evitar que cambie */
+        box-shadow: inset 0px 3px 5px rgba(0,0,0,0.2); /* Efecto de presión */
+    }
     </style>
     """, unsafe_allow_html=True)
 #tablas
