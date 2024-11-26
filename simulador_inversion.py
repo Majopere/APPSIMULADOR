@@ -280,7 +280,7 @@ def simulador():
     # Validar que la suma de los pesos sea 100% para permitir la simulación
     if faltante == 0:
         # Configuración del horizonte de inversión
-        horizonte_inversion = st.slider("Horizonte de Inversión (años)", min_value=1, max_value=30, value=10)
+        horizonte_inversion = st.slider("Horizonte de Inversión (años)", min_value=5, max_value=30, value=10)
         
         # Configuración para las 3 aportaciones adicionales (opcionales)
         st.subheader("Configuración de Aportaciones Adicionales (Opcionales)")
