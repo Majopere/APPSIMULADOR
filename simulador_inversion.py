@@ -11,7 +11,6 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 import torch
 
 openai.api_key = st.secrets["OPENAI_API_KEY"]
-HUGGINGFACE_API_KEY= st.secrets["HUGGINGFACE_API_KEY"]
 
 # Configuración de la página de Streamlit
 st.set_page_config(page_title="Simulador Allianz OptiMaxx", layout="wide")
@@ -33,6 +32,27 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
+st.markdown(
+    """
+    <style>
+    table {
+        font-size: 16px;
+        color: #333333;
+        border-collapse: collapse;
+        width: 100%;
+    }
+    th, td {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+    }
+    th {
+        background-color: #007BFF;
+        color: white;
+    }
+    </style>
+    """, unsafe_allow_html=True
+)
 
 
 
@@ -79,7 +99,7 @@ def get_user_by_email(correo):
 # Crear tabla de usuarios al inicio
 create_user_table()
 
-
+HUGGINGFACE_API_KEY= st.secrets["HUGGINGFACE_API_KEY"]
 API_URL = "https://api-inference.huggingface.co/models/OpenAssistant/oasst-sft-4-pythia-12b-epoch-3.5"
 HEADERS = {"Authorization": f"Bearer {HUGGINGFACE_API_KEY}"}
 def query_huggingface(prompt):
