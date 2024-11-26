@@ -6,11 +6,5 @@ openai
 streamlit
 pandas
 numpy
-chatterbot==1.0.5
-chatterbot-corpus==1.2.0
 transformers==4.34.0
-torch>=1.9.0
-google-cloud-dialogflow==2.21.0
-requests==2.31.0
-python-3.8
-pyyaml==5.1
+torch
