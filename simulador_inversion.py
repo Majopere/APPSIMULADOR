@@ -27,7 +27,7 @@ st.markdown("""
         border: none; /* Sin bordes */
     }
     .stButton>button:hover {
-        background-color: #151515; /* Color de fondo al pasar el mouse */
+        background-color: #686564; /* Color de fondo al pasar el mouse */
         color: white;
     }
     </style>
@@ -38,7 +38,7 @@ st.markdown(
     <style>
     table {
         font-size: 16px;
-        color: #333333;
+        color: #b3b7b8;
         border-collapse: collapse;
         width: 100%;
     }
