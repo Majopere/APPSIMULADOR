@@ -10,16 +10,6 @@ import openai
 from transformers import AutoModelForCausalLM, AutoTokenizer
 import torch
 
-st.markdown(
-    """
-    <style>
-    body {
-        background-color: #F8F9FA;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
 
 
 
